@@ -12,22 +12,34 @@ preferred choice.
 
 Here is a function that generates a pair of RSA keys:
 */
-import { generateKeyPairSync } from "crypto";
+import { generateKeyPair } from "crypto";
 
-export const generateRsaPair = () => {
-    const { publicKey, privateKey } = generateKeyPairSync("rsa", {
-        modulusLength: 2048,
-        publicKeyEncoding: {
-            type: "spki",
-            format: "pem",
-        },
-        privateKeyEncoding: {
-            type: "pkcs8",
-            format: "pem",
-        },
+export const generateRsaPair = (): Promise<{ publicKey: Buffer; privateKey: Buffer }> => {
+    return new Promise((resolve, reject) => {
+        generateKeyPair(
+            "rsa",
+            {
+                modulusLength: 2048,
+                publicKeyEncoding: {
+                    type: "spki",
+                    format: "pem",
+                },
+                privateKeyEncoding: {
+                    type: "pkcs8",
+                    format: "pem",
+                },
+            },
+            (err, publicKey, privateKey) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve({
+                    publicKey: Buffer.from(publicKey),
+                    privateKey: Buffer.from(privateKey),
+                });
+            },
+        );
     });
-    return {
-        publicKey: Buffer.from(publicKey),
-        privateKey: Buffer.from(privateKey),
-    };
 };

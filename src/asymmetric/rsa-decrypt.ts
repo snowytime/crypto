@@ -9,13 +9,19 @@ export function rsaDecrypt({
     data,
     privateKey,
     padding = constants.RSA_PKCS1_OAEP_PADDING,
-}: RsaDecryptArguments): Buffer {
-    const buffer = privateDecrypt(
-        {
-            key: privateKey,
-            padding,
-        },
-        data,
-    );
-    return buffer;
+}: RsaDecryptArguments): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+        try {
+            const buffer = privateDecrypt(
+                {
+                    key: privateKey,
+                    padding,
+                },
+                data,
+            );
+            resolve(buffer);
+        } catch (error) {
+            reject(error);
+        }
+    });
 }

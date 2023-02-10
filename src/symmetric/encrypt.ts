@@ -14,22 +14,28 @@ import crypto from "node:crypto";
 
 interface EncryptionReturn {
     iv: Buffer;
-    encryptedData: Buffer;
+    data: Buffer;
 }
 interface EncryptionArguments {
-    text: string;
+    data: Buffer;
     key: Buffer;
     algorithm?: string;
 }
 export const symmetricEncrypt = ({
-    text,
+    data,
     key,
     algorithm = "aes-256-cbc",
-}: EncryptionArguments): EncryptionReturn => {
+}: EncryptionArguments): Promise<EncryptionReturn> => {
     // the iv is used to ensure that the same string is encrypted differently each time
-    const iv = crypto.randomBytes(16);
-    const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return { iv, encryptedData: encrypted };
+    return new Promise((resolve, reject) => {
+        try {
+            const iv = crypto.randomBytes(16);
+            const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+            let encrypted = cipher.update(data);
+            encrypted = Buffer.concat([encrypted, cipher.final()]);
+            resolve({ iv, data: encrypted });
+        } catch (e) {
+            reject(e);
+        }
+    });
 };

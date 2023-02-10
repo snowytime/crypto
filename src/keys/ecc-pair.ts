@@ -14,10 +14,7 @@ that are returned as buffers.
 */
 import { createECDH } from "node:crypto";
 
-type EccPair = {
-    curve?: string;
-};
-export const generateEccPair = ({ curve = "prime256v1" }: EccPair) => {
+export const generateEccPair = (curve = "prime256v1") => {
     const ecdh = createECDH(curve);
     const publicKey = ecdh.generateKeys();
     const privateKey = ecdh.getPrivateKey();

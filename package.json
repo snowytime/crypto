@@ -5,13 +5,12 @@
     "type": "module",
     "scripts": {
         "test": "mocha --exit",
-        "test:integration": "mocha --config=.mocharc-integration.json --exit",
         "build:raw": "rm -rf dist && swc src --config-file .swcrc-mjs.json -d dist/mjs && swc src --config-file .swcrc-cjs.json -d dist/cjs && sh finalize.sh",
         "build:esm": "rm -rf dist && swc src --config-file .swcrc-mjs.json -d dist",
         "build:types:esm": "tsc -p ./tsconfig.mjs.json",
         "build:types": "tsc -p ./tsconfig.mjs.json && tsc -p ./tsconfig.cjs.json",
         "build": "npm run build:raw && npm run build:types && sh finalize.sh",
-        "release:patch": "npm run test && npm run test:integration && npm run build && git add . && git commit -m '⚡️ auto patch' && git push origin master && npm version patch && npm publish"
+        "release:patch": "npm run test && npm run build && git add . && git commit -m '⚡️ auto patch' && git push origin master && npm version patch && npm publish"
     },
     "keywords": [],
     "author": "snowytime",

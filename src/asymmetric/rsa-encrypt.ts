@@ -9,13 +9,19 @@ export function rsaEncrypt({
     data,
     publicKey,
     padding = constants.RSA_PKCS1_OAEP_PADDING,
-}: RsaEncryptArguments): Buffer {
-    const buffer = publicEncrypt(
-        {
-            key: publicKey,
-            padding,
-        },
-        data,
-    );
-    return buffer;
+}: RsaEncryptArguments): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+        try {
+            const buffer = publicEncrypt(
+                {
+                    key: publicKey,
+                    padding,
+                },
+                data,
+            );
+            resolve(buffer);
+        } catch (error) {
+            reject(error);
+        }
+    });
 }

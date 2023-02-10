@@ -8,7 +8,7 @@ that there is no need to provide the key directly to the receiving end.
 
 Here is an example of how you could use a KDF function in nodejs:
 */
-import crypto from "node:crypto";
+import { pbkdf2, randomBytes } from "node:crypto";
 
 interface Arguments {
     algorithm?: string;
@@ -20,14 +20,14 @@ interface Arguments {
 }
 export const generateKdfKey = ({
     password,
-    salt = crypto.randomBytes(32),
+    salt = randomBytes(32),
     iterations = 100000,
     length = 32,
     // the digest algorithm to use (sha512 is the default)
     digest = "sha512",
 }: Arguments): Promise<Buffer> => {
     return new Promise((resolve, reject) => {
-        crypto.pbkdf2(password, salt, iterations, length, digest, (err, derivedKey) => {
+        pbkdf2(password, salt, iterations, length, digest, (err, derivedKey) => {
             if (err) {
                 reject(err);
             } else {

@@ -10,32 +10,37 @@ it more annoying to crack.
 Note that this function will return an object with a salt and a hash, both of which are Buffers. It will
 need to be processed before it can be used and/or saved.
 */
-import { pbkdf2Sync, randomBytes } from "node:crypto";
+import { pbkdf2 } from "node:crypto";
 
-// function that generates a random salt as buffer
-export const generateSalt = (length = 16) => {
-    return Buffer.from(randomBytes(length).toString("binary"), "binary");
-};
-
-type SaltHashingArguments = {
-    text: string;
+type Pbkdf2Arguments = {
+    data: Buffer;
     salt: Buffer;
     algorithm?: string;
     iterations?: number;
     length?: number;
 };
-
+type Pbkdf2Return = {
+    salt: Buffer;
+    hash: Buffer;
+};
 // function that generates the salted hash, and returns the original salt
 export const pbkdf2Hashing = ({
-    text,
+    data,
     salt,
     algorithm = "sha512",
     iterations = 100000,
     length = 64,
-}: SaltHashingArguments) => {
-    const hash = pbkdf2Sync(text, salt, iterations, length, algorithm);
-    return {
-        salt,
-        hash,
-    };
+}: Pbkdf2Arguments): Promise<Pbkdf2Return> => {
+    return new Promise((resolve, reject) => {
+        pbkdf2(data, salt, iterations, length, algorithm, (err, derivedKey) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({
+                    salt,
+                    hash: derivedKey,
+                });
+            }
+        });
+    });
 };
