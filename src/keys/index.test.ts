@@ -1,3 +1,5 @@
+import test from "ava";
+
 import {
     generateRandomKey,
     generateKdfKey,
@@ -6,30 +8,28 @@ import {
     generateDhKeys,
 } from "./index.js";
 
-describe("Testing the key generation function", () => {
-    it("should be able to generate a basic key", () => {
-        const key = generateRandomKey();
-        expect(key).instanceOf(Buffer);
+test("should be able to generate a basic key", (t) => {
+    const key = generateRandomKey();
+    t.true(key instanceof Buffer);
+});
+test("should be able to generate a kdf key", async (t) => {
+    const key = await generateKdfKey({
+        password: "password",
     });
-    it("should be able to generate a kdf key", async () => {
-        const key = await generateKdfKey({
-            password: "password",
-        });
-        expect(key).instanceOf(Buffer);
-    });
-    it("should be able to generate a rsa pair", async () => {
-        const { publicKey, privateKey } = await generateRsaPair();
-        expect(privateKey).instanceOf(Buffer);
-        expect(publicKey).instanceOf(Buffer);
-    });
-    it("should be able to generate an ecc pair", async () => {
-        const { publicKey, privateKey } = generateEccPair();
-        expect(privateKey).instanceOf(Buffer);
-        expect(publicKey).instanceOf(Buffer);
-    });
-    it("should be able to generate a dh pair", async () => {
-        const { publicKey, sharedSecret } = generateDhKeys();
-        expect(publicKey).instanceOf(Buffer);
-        expect(sharedSecret).instanceOf(Buffer);
-    });
+    t.true(key instanceof Buffer);
+});
+test("should be able to generate a rsa pair", async (t) => {
+    const { publicKey, privateKey } = await generateRsaPair();
+    t.true(privateKey instanceof Buffer);
+    t.true(publicKey instanceof Buffer);
+});
+test("should be able to generate an ecc pair", async (t) => {
+    const { publicKey, privateKey } = generateEccPair();
+    t.true(privateKey instanceof Buffer);
+    t.true(publicKey instanceof Buffer);
+});
+test("should be able to generate a dh pair", async (t) => {
+    const { publicKey, sharedSecret } = generateDhKeys();
+    t.true(publicKey instanceof Buffer);
+    t.true(sharedSecret instanceof Buffer);
 });

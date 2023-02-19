@@ -1,42 +1,42 @@
+import test from "ava";
+
 import { createHmac, utf8ToBuffer } from "../index.js";
 import { verifyHmac } from "./verify.js";
 
-describe("Testing the HMAC function", () => {
-    it("Should be able to create a HMAC", () => {
-        const secret = "my secret";
-        const data = "some data";
-        const hmacSignature = createHmac({
-            data: utf8ToBuffer(data),
-            secret: utf8ToBuffer(secret),
-        });
-        expect(hmacSignature).instanceOf(Buffer);
+test("Should be able to create a HMAC", (t) => {
+    const secret = "my secret";
+    const data = "some data";
+    const hmacSignature = createHmac({
+        data: utf8ToBuffer(data),
+        secret: utf8ToBuffer(secret),
     });
-    it("Should be able to verify a HMAC", () => {
-        const secret = "my secret";
-        const data = "some data";
-        const hmacSignature = createHmac({
-            data: utf8ToBuffer(data),
-            secret: utf8ToBuffer(secret),
-        });
-        const verified = verifyHmac({
-            data: utf8ToBuffer(data),
-            secret: utf8ToBuffer(secret),
-            hmac: hmacSignature,
-        });
-        expect(verified).equals(true);
+    t.true(hmacSignature instanceof Buffer);
+});
+test("Should be able to verify a HMAC", (t) => {
+    const secret = "my secret";
+    const data = "some data";
+    const hmacSignature = createHmac({
+        data: utf8ToBuffer(data),
+        secret: utf8ToBuffer(secret),
     });
-    it("should fail if hmac does not match", () => {
-        const secret = "original secret";
-        const data = "my data";
-        const hmacSignature = createHmac({
-            data: utf8ToBuffer(data),
-            secret: utf8ToBuffer(secret),
-        });
-        const verified = verifyHmac({
-            data: utf8ToBuffer(data),
-            secret: utf8ToBuffer("new secret"),
-            hmac: hmacSignature,
-        });
-        expect(verified).equals(false);
+    const verified = verifyHmac({
+        data: utf8ToBuffer(data),
+        secret: utf8ToBuffer(secret),
+        hmac: hmacSignature,
     });
+    t.true(verified);
+});
+test("should fail if hmac does not match", (t) => {
+    const secret = "original secret";
+    const data = "my data";
+    const hmacSignature = createHmac({
+        data: utf8ToBuffer(data),
+        secret: utf8ToBuffer(secret),
+    });
+    const verified = verifyHmac({
+        data: utf8ToBuffer(data),
+        secret: utf8ToBuffer("new secret"),
+        hmac: hmacSignature,
+    });
+    t.false(verified);
 });
