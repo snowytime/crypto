@@ -1,12 +1,7 @@
 import test from "ava";
 
-import {
-    base64ToBuffer,
-    bufferToBase64,
-    bufferToUtf8,
-    generateRsaPair,
-    utf8ToBuffer,
-} from "../index.js";
+import { base64ToBuffer, bufferToBase64, bufferToUtf8, utf8ToBuffer } from "#helpers/index.js";
+import { generateRsaPair } from "../index.js";
 import { hybridDecrypt, hybridEncrypt } from "./index.js";
 
 test("Should be able to encrypt and decrypt a string", async (t) => {

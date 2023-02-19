@@ -34,8 +34,7 @@
         ]
     },
     "imports": {
-        "#helpers/*": "./src/helpers/*",
-        "#keys/*": "./src/keys/*"
+        "#helpers/*": "./src/helpers/*"
     },
     "homepage": "https://snowy.sh/packages/crypto",
     "bugs": {

@@ -1,6 +1,6 @@
 import test from "ava";
 
-import { generateSalt, utf8ToBuffer } from "../index.js";
+import { generateSalt, utf8ToBuffer } from "#helpers/index.js";
 import { scryptHashing, pbkdf2Hashing } from "./index.js";
 
 test("should be able to generate a scrypt hash", async (t) => {

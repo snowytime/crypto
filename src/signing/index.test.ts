@@ -1,6 +1,7 @@
 import test from "ava";
 
-import { base64ToBuffer, bufferToBase64, generateRandomKey, utf8ToBuffer } from "../index.js";
+import { base64ToBuffer, bufferToBase64, utf8ToBuffer } from "#helpers/index.js";
+import { generateRandomKey } from "../index.js";
 import { signData, verifySignature } from "./index.js";
 
 test("should be able to sign data", (t) => {

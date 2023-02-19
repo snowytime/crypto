@@ -1,6 +1,7 @@
 import test from "ava";
 
-import { createHmac, utf8ToBuffer } from "../index.js";
+import { utf8ToBuffer } from "#helpers/index.js";
+import { createHmac } from "../index.js";
 import { verifyHmac } from "./verify.js";
 
 test("Should be able to create a HMAC", (t) => {
