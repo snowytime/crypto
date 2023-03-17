@@ -1,5 +1,6 @@
 {
     "name": "@snowytime/crypto",
+    "sideEffects": false,
     "type": "module",
     "version": "1.0.4",
     "description": "",
